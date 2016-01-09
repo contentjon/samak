@@ -4,11 +4,11 @@
    [reagent.core :as re]
    [revent.core :as rv]
    [samak.tree.component :as tc]
+   [samak.tree.parser :as tp]
    [samak.tree.system :as ts]))
 
 (def example-symbol
-  {:type :symbol
-   :label "foo"})
+  (tp/expr->tree 'foo))
 
 (defcard-rg symbol
   (tc/node example-symbol))
@@ -16,18 +16,8 @@
 (defcard-rg selected-symbol
   (tc/node (assoc example-symbol :selected? true)))
 
-(def example-tree {:type :list
-                   :children [{:type :symbol
-                               :label "foo"}
-                              {:type :symbol
-                               :label "bar"}
-                              {:type :list
-                               :children [{:type :symbol
-                                           :label "baq"}
-                                          {:type :symbol
-                                           :label "bav"}
-                                          {:type :symbol
-                                           :label "baz"}]}]})
+(def example-tree
+  (tp/expr->tree '(foo bar (baq bav baz))))
 
 (defcard-rg tree
   (tc/node example-tree))

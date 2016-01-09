@@ -29,7 +29,7 @@
                         :source-paths ["src" "test"]
                         :compiler {:main "samak.cards"
                                    :devcards true
-                                   :asset-path "js/compiled/out"
+                                   :asset-path "js/compiled/devcards_out"
                                    :output-to  "resources/public/js/compiled/samak_cards.js"
                                    :optimizations :advanced}}
                        {:id "dev"
