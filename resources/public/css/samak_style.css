@@ -1,5 +1,5 @@
 /* samak CSS */
 
-.node.selected {
-  background: #AAF;
+.active ul {
+  color: black;
 }

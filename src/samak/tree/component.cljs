@@ -8,22 +8,25 @@
 
 (defn node [{:keys [selected?]
              :as node}]
-  [:div.node {:class (when selected? :selected)}
+  [:div.node
    (render node)])
 
 (defmethod render :symbol [{:keys [label]}]
   [:p label])
 
 (defmethod render :list [{:keys [children selected?]}]
-  [:ul
+  [:ul.list-group
    (map-indexed (fn [i child]
                   ^{:key i}
-                  [:li (node child)])
+                  [:li.list-group-item
+                   {:class (when (:selected? child) :active)}
+                   (node child)])
                 children)])
 
-(defn tree-view [root]
+(defn tree-view [{:keys [selected?] :as root}]
   [:div.tree
-   (node root)])
+   [:ul.list-group>li.list-group-item {:class (when selected? :active) }
+    (node root)]])
 
 (def keymap {37 :left
              38 :up

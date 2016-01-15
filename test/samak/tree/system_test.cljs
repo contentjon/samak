@@ -5,7 +5,48 @@
             [devcards.core     :as dc
                                :refer-macros [defcard-rg deftest]]
             [revent.core       :as rv]
+            [samak.tree.parser :as tp]
             [samak.tree.system :as ts]))
+
+(defn spit-tree-test [tree]
+  (-> tree
+      tp/expr->tree
+      ts/tree-zip
+      z/down
+      z/right
+      ts/spit
+      z/up
+      z/node))
+
+(deftest spit
+  (is (= (spit-tree-test [:a [:b :c]])
+         (tp/expr->tree [:a [:b] :c])))
+  (is (= (spit-tree-test [:a [:b]])
+         (tp/expr->tree [:a [] :b])))
+  (is (= (spit-tree-test [:a []])
+         (tp/expr->tree [:a []])))
+  (is (= (spit-tree-test [:a :b :c])
+         (tp/expr->tree [:a :b :c]))))
+
+(defn slurp-tree-test [tree]
+  (-> tree
+      tp/expr->tree
+      ts/tree-zip
+      z/down
+      z/right
+      ts/slurp
+      z/up
+      z/node))
+
+(deftest slurp
+  (is (= (slurp-tree-test [:a [:b] :c])
+         (tp/expr->tree [:a [:b :c]])))
+  (is (= (slurp-tree-test [:a [] :b])
+         (tp/expr->tree [:a [:b]])))
+  (is (= (slurp-tree-test [:a []])
+         (tp/expr->tree [:a []])))
+  (is (= (slurp-tree-test [:a :b :c])
+         (tp/expr->tree [:a :b :c]))))
 
 (deftest treezip
   (is (= (-> {:children [{:a 1}]}
